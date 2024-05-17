@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<title>IIT Billing</title>
+<link rel="shorcut icon" type="x-icon" href="./images/schoologo.webp"> 
+<link rel="stylesheet" href="main.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+<head>
+
+</p>
+  <div class="main">
+
+  </div>
+  <body>
+    <div class="canvas_div_pdf">
+        <button onclick="getPDF()" id="downloadbtn">
+            <b>Click to download as PDF File</b>
+        </button>
+        <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <img
+                                    src="./images/schoologo.webp"
+                                    style="width: 150px; max-width: 300px">
+            <tr class="information">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td>
+                                Intellisense Institute of Technology Inc.
+                                <br />
+                                A.C Cortes Ave, Mandaue<br />
+                                Cebu, 6014
+                            </td>
+
+                            <td>
+                                "Adviser"<br />
+                                "Grade - Section
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="heading">
+                <td contenteditable="true">Tuition Fee</td>
+
+                <td>Balance</td>
+            </tr>
+
+            <tr class="item">
+                <td>• Febuary <br>
+                    • March
+                </td>
+
+                <td>₱2000 <br>
+                ₱2000</td>
+            </tr>
+            <tr class="heading">
+                <td>Others/Miscellaneous</td>
+                <td> </td>
+            </tr>
+            <tr class="item">
+                <td>• JS Prom <br>
+                • Milo Marathon</td>
+
+                <td>₱1000 <br>
+                    ₱100</td>
+            </tr>
+            <tr class="heading">
+                <td>Total</td>
+                
+                <td>₱5100</td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+  <script src="main.js">
+    function getPDF(){
+
+var HTML_Width = $(".canvas_div_pdf").width();
+var HTML_Height = $(".canvas_div_pdf").height();
+var top_left_margin = 15;
+var PDF_Width = HTML_Width+(top_left_margin*2);
+var PDF_Height = (PDF_Width*1.5)+(top_left_margin*2);
+var canvas_image_width = HTML_Width;
+var canvas_image_height = HTML_Height;
+
+var totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
+
+
+html2canvas($(".canvas_div_pdf")[0],{allowTaint:true}).then(function(canvas) {
+  canvas.getContext('2d');
+  
+  console.log(canvas.height+"  "+canvas.width);
+  
+  
+  var imgData = canvas.toDataURL("image/jpeg", 1.0);
+  var pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
+    pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
+  
+  
+  for (var i = 1; i <= totalPDFPages; i++) { 
+    pdf.addPage(PDF_Width, PDF_Height);
+    pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
+  }
+  
+    pdf.save("HTML-Document.pdf");
+    });
+};
+  </script>
+  </html>
